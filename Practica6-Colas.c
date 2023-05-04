@@ -39,11 +39,7 @@ int main(int argc, char const *argv[])
     printf("\n FRONT: %d", Front(cabeza));
     printf("\n TAMANO: %d", QueueSize(cabeza));
     system("pause");
-    Dequeue(&cabeza);
-    recorrerCola(cabeza);
-    printf("\n FRONT: %d", Front(cabeza));
-    printf("\n TAMANO: %d", QueueSize(cabeza));
-    system("pause");
+
 
     free(cabeza);
 
