@@ -6,9 +6,9 @@ Integrentes del equipo:
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h>
 #include <time.h>
 #include <windows.h>
+
 typedef struct nodo
 {
     int tiempo_llegada;
@@ -24,7 +24,7 @@ void Dequeue(ptrNodo *cabeza);
 int Front(ptrNodo cabeza);
 int QueueSize(ptrNodo cabeza);
 int isEmpty(ptrNodo cabeza);
-void recorrerCola(ptrNodo cabeza);
+void recorrerCola(ptrNodo cabeza, int i);
 
 
 
@@ -42,48 +42,56 @@ int main(int argc, char const *argv[])
     int total_clientes_atendidos = 0;
     int tiempo_espera = 0;
     int numero_cliente = 1;
-    // int temp = 0;
-    // bool se_esta_atendiendo = true;
+    int clientes_en_cola, max_clientes_en_cola = 0;
 
+    //ciclo prinicipal que simula los minutos
     for(int i = 0; i < 720; i++) {
         //si el tiempo de llegada es igual al tiempo actual, se encola un cliente
-        
         if(i == tiempo_llegada) {
+            //encolar al cliente con el tiempo de llegada y atencion
             Enqueue(&cabeza, tiempo_llegada, tiempo_atencion, numero_cliente);
+            
+            clientes_en_cola++;
+            if(clientes_en_cola > max_clientes_en_cola) {
+                max_clientes_en_cola = clientes_en_cola;
+            }
+
+            //generar aleatoriamente nuevos tiempos de llegada y atención
             tiempo_llegada += rand() % 4 + 1;
             tiempo_atencion = rand() % 4 + 1;
-            // printf("\nEl tiempo de atencion es: %d\n", tiempo_atencion);
+
+            //aumentar el numero de clientes que han llegado
             numero_cliente++;
         }
-        //si el tiempo de llegada es igual al tiempo actual, se encola un cliente
 
 
-        //si se ha llegado al tiempo de atencion, se atiende al cliente y se saca de la cola
-        
-        if(!isEmpty(cabeza) && i == cabeza->tiempo_llegada + cabeza->tiempo_atencion) {
-            // printf("Test2\n");
-
-            printf("\nCliente %d atendido en el minuto %d\n", cabeza->id, i);
-            Dequeue(&cabeza);
-            total_clientes_atendidos++;
-        } else if (!isEmpty(cabeza) && i > cabeza->tiempo_llegada + cabeza->tiempo_atencion) {
-            printf("\nCliente %d se ha ido porque lleva esperando demasiado.\n", cabeza->id);
-            Dequeue(&cabeza);
+        //verificar que la cabeza no esta vacia
+        if(!isEmpty(cabeza)) {
+            //decrementar el tiempo de atención del cliente actual (cabeza) hasta llegar a 0
+            cabeza->tiempo_atencion--;
+            if(cabeza->tiempo_atencion == 0) {
+                printf("\nCliente %d atendido en el minuto %d\n", cabeza->id, i);
+                //desencolar al cliente y aumentar el numero de clientes atendidos
+                Dequeue(&cabeza);
+                clientes_en_cola--;
+                total_clientes_atendidos++;
+            }
         }
-        // printf("Pasa if\n");
 
+        //verificar que la cabeza no esta vacía y recorrerla
         if(!isEmpty(cabeza)){
-            recorrerCola(cabeza);
+            recorrerCola(cabeza, i);
         }
-        Sleep(1000);
+
+        //activar para simular el paso de los minutos
+        // delay(1000);
+        // Sleep(1000);
     }
-    recorrerCola(cabeza);
+    recorrerCola(cabeza, 720);
     
-    printf("EL NUMERO TOTAL DE CLIENTES ATENDIDOS ES: %d\n", total_clientes_atendidos);
-    // system("pause");
+    printf("\nEL NUMERO TOTAL DE CLIENTES ATENDIDOS ES: %d\n", total_clientes_atendidos);
+    printf("EL NUMERO MAXIMO DE CLIENTES EN COLA ES: %d\n", max_clientes_en_cola);
 
-
-    // free(cabeza);
     // Liberando memoria
     while (!isEmpty(cabeza))
     {
@@ -176,10 +184,10 @@ int isEmpty(ptrNodo cabeza)
         return 0;
 }
 
-void recorrerCola(ptrNodo cabeza)
+void recorrerCola(ptrNodo cabeza, int i)
 {
     ptrNodo aux = cabeza;
-    printf("\n\t\t FILA DE LA CAJA DEL SUPERMERCADO...\n");
+    printf("\n\t\t FILA DE LA CAJA DEL SUPERMERCADO. MINUTO %d...\n", i);
     while(cabeza!= NULL)
     {
         printf(" %d |", cabeza->id);
