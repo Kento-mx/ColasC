@@ -37,10 +37,8 @@ int main(int argc, char const *argv[])
 
     //generar un numero aleatorio entre 1 y 4
     int tiempo_llegada = rand() % 4 + 1;
-    int tiempo_llegada_primer_cliente = tiempo_llegada;
     int tiempo_atencion = rand() % 4 + 1;
     int total_clientes_atendidos = 0;
-    int tiempo_espera = 0;
     int numero_cliente = 1;
     int clientes_en_cola, max_clientes_en_cola = 0;
 
@@ -193,6 +191,5 @@ void recorrerCola(ptrNodo cabeza, int i)
         printf(" %d |", cabeza->id);
         cabeza= cabeza->ptrSig;
     }
-    // printf("\n FRONT: %d", Front(aux));
-    // printf("\n TAMANO: %d\n", QueueSize(cabeza));
+    printf("\n");
 }
