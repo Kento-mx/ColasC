@@ -33,7 +33,7 @@ int main(int argc, char const *argv[])
 
     Enqueue(&cabeza, 1);
     Enqueue(&cabeza, 2);
-
+    Enqueue(&cabeza, 3);
     recorrerCola(cabeza);
     printf("\n FRONT: %d", Front(cabeza));
     printf("\n TAMANO: %d", QueueSize(cabeza));
