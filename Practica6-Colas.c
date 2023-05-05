@@ -13,6 +13,7 @@ typedef struct nodo
 {
     int tiempo_llegada;
     int tiempo_atencion;
+    int tiempo_salida;
     int id;
     struct nodo *ptrSig;
 }cliente;
@@ -40,7 +41,7 @@ int main(int argc, char const *argv[])
     int tiempo_atencion = rand() % 4 + 1;
     int total_clientes_atendidos = 0;
     int numero_cliente = 1;
-    int clientes_en_cola, max_clientes_en_cola = 0;
+    int clientes_en_cola, max_clientes_en_cola, max_tiempo_salida = 0;
 
     //ciclo prinicipal que simula los minutos
     for(int i = 0; i < 720; i++) {
@@ -69,6 +70,13 @@ int main(int argc, char const *argv[])
             cabeza->tiempo_atencion--;
             if(cabeza->tiempo_atencion == 0) {
                 printf("\nCliente %d atendido en el minuto %d\n", cabeza->id, i);
+                
+                //tiempo que espero el cliente en ser atendido desde que llego
+                cabeza->tiempo_salida = i - cabeza->tiempo_llegada;
+                if(cabeza->tiempo_salida > max_tiempo_salida) {
+                    max_tiempo_salida = cabeza->tiempo_salida;
+                }
+
                 //desencolar al cliente y aumentar el numero de clientes atendidos
                 Dequeue(&cabeza);
                 clientes_en_cola--;
@@ -89,6 +97,8 @@ int main(int argc, char const *argv[])
     
     printf("\nEL NUMERO TOTAL DE CLIENTES ATENDIDOS ES: %d\n", total_clientes_atendidos);
     printf("EL NUMERO MAXIMO DE CLIENTES EN COLA ES: %d\n", max_clientes_en_cola);
+    printf("EL TIEMPO MAXIMO QUE ESPERO UN CLIENTE FUE: %d MINUTOS\n", max_tiempo_salida);
+
 
     // Liberando memoria
     while (!isEmpty(cabeza))
