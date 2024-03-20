@@ -1,7 +1,7 @@
 /* PROGRAMA DE SIMULACION DE SUPERMERCADO UTILIZANDO COLAS
 Integrentes del equipo:
-    -Leon Cortez Alan Fernando 1274062
-    -Morales Ramos Bernardo 1288710
+    -Leon Cortez Alan Fernando 
+    -Morales Ramos Bernardo 
 */
 
 #include <stdio.h>
